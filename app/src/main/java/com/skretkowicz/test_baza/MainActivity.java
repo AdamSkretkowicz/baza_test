@@ -104,23 +104,29 @@ public class MainActivity extends Activity {
 
         try {
             JSONObject jsonResponse = new JSONObject(jsonResult);
-            JSONArray jsonMainNode = jsonResponse.optJSONArray("emp_info");
+            JSONArray jsonMainNode = jsonResponse.optJSONArray("Kadra");
 
             for (int i = 0; i < jsonMainNode.length(); i++) {
                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
-                String name = jsonChildNode.optString("employee name");
-                String number = jsonChildNode.optString("employee no");
+                String name = jsonChildNode.optString("idKadra");
+                String number = jsonChildNode.optString("Kadra_nazwa");
                 String outPut = name + "-" + number;
-                employeeList.add(createEmployee("employees", outPut));
+                employeeList.add(createEmployee("kadra", outPut));
             }
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Error" + e.toString(),
                     Toast.LENGTH_SHORT).show();
         }
 
+
+
+
+
+
+
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, employeeList,
                 android.R.layout.simple_list_item_1,
-                new String[] { "employees" }, new int[] { android.R.id.text1 });
+                new String[] { "kadra" }, new int[] { android.R.id.text1 });
         listView.setAdapter(simpleAdapter);
         Toast.makeText(getApplication(), "Pobrano elementy", Toast.LENGTH_SHORT).show();
 
