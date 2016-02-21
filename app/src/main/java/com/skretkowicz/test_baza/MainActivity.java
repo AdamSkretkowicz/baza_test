@@ -31,12 +31,14 @@ public class MainActivity extends Activity {
     private String jsonResult;
     private String url = "http://87.118.106.127/adamlex/b/employee_details2.php";
     private ListView listView;
+    private ListView listView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView) findViewById(R.id.listView1);
+        listView2 = (ListView) findViewById(R.id.listView2);
         accessWebService();
     }
 
@@ -108,9 +110,8 @@ public class MainActivity extends Activity {
 
             for (int i = 0; i < jsonMainNode.length(); i++) {
                 JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
-                String name = jsonChildNode.optString("idKadra");
                 String number = jsonChildNode.optString("Kadra_nazwa");
-                String outPut = name + "-" + number;
+                String outPut = number;
                 employeeList.add(createEmployee("kadra", outPut));
             }
         } catch (JSONException e) {
@@ -118,16 +119,37 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         }
 
-
-
-
-
-
-
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, employeeList,
                 android.R.layout.simple_list_item_1,
                 new String[] { "kadra" }, new int[] { android.R.id.text1 });
         listView.setAdapter(simpleAdapter);
+        Toast.makeText(getApplication(), "Pobrano elementy", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+        List<Map<String, String>> employeeList2 = new ArrayList<Map<String, String>>();
+
+        try {
+            JSONObject jsonResponse = new JSONObject(jsonResult);
+            JSONArray jsonMainNode = jsonResponse.optJSONArray("Kadra");
+
+            for (int i = 0; i < jsonMainNode.length(); i++) {
+                JSONObject jsonChildNode = jsonMainNode.getJSONObject(i);
+                String name2 = jsonChildNode.optString("idKadra");
+                String outPut = name2;
+                employeeList2.add(createEmployee("kadra", outPut));
+            }
+        } catch (JSONException e) {
+            Toast.makeText(getApplicationContext(), "Error" + e.toString(),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        SimpleAdapter simpleAdapter2 = new SimpleAdapter(this, employeeList2,
+                android.R.layout.simple_list_item_2,
+                new String[] { "kadra" }, new int[] { android.R.id.text2 });
+        listView2.setAdapter(simpleAdapter2);
         Toast.makeText(getApplication(), "Pobrano elementy", Toast.LENGTH_SHORT).show();
 
     }
